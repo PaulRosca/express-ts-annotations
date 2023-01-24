@@ -2,12 +2,16 @@ import { RouteConfig } from "./types.js";
 import { RouteConfigs } from "./utils.js"
 
 export function controller(path: string = "/") {
+    let localPath = path;
+    if(!localPath.startsWith("/")) {
+        localPath = "/" + localPath;
+    }
     return function <T extends new (...args: any[]) => any>(constructor: T) {
         return class extends constructor {
 
             constructor(...args: any[]) {
                 super(...args);
-                this.path = path;
+                this.path = localPath;
                 this.__configure();
             };
 

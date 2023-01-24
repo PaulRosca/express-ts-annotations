@@ -1,3 +1,4 @@
 import { BaseController } from "./classes.js";
-export declare const injectControllers: (app: any, controllers: BaseController[]) => void;
+import { Express } from "express";
+export declare const injectControllers: (app: Express, controllers: BaseController[]) => void;
 //# sourceMappingURL=functions.d.ts.map
