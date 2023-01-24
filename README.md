@@ -1,4 +1,4 @@
-# express-annotations
+# express-ts-annotations
 An annotation system for express.
 ## Installation
 ```sh
