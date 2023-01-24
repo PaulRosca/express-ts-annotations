@@ -32,6 +32,13 @@ class OrderController extends BaseController {
     public addNewOrder(req: Request, res: Response) {
         ...
     }
+    
+    // This will generate the DELETE route /orders/all-my-orders and apply the middleware auth
+    @route("delete")
+    @middlewares([auth])
+    public allMyOrders(req: Request, res: Response) {
+        ...
+    }
 }
 
 export default new OrderController();
@@ -58,9 +65,9 @@ This is a class that all controllers must extend. It contains some internal info
 A class decorator that sets up the `path` in which the controller will be injected. If the `path` doesn't start with a `/`, it will be automatically added by the system. The default `path` is `/`.
 ### `@route(method?: RESTMethod, path?: string)`
 This is a method decorator that assigns the method to a `path`. 
-By default if no parameters are provided the system will analyze the method name and assign a rest method and path automatically,
+By default if no parameters are provided the system will analyze the method name and assign a rest `method` and `path` automatically,
 for this the method name must start with a RESTMethod (i.e `get`, `post`, `put`, `patch`, `delete`, `all`) followed by the path written in CamelCase 
-which will be transformed automatically in kebab case. If the `method` or `path` is specified, they will be used instead of the system generated ones.
+which will be transformed automatically in kebab case. If only the `method` is specified the name will still be asigned automatically. If the `method` or `path` is specified, they will be used instead of the system generated ones.
 If the `path` doesn't start with `/`, it will be added automatically.
 ### `@middlewares(middlewares: Middleware[])`
 This method decorator is used to specify the `middlewares` that should apply to the `route` of the method. 
