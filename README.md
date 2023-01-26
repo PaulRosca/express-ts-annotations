@@ -2,7 +2,7 @@
 An annotation system for express.
 ## Installation
 ```sh
-$ npm install express-annotations
+$ npm install express-ts-annotations
 ```
 ## Usage
 Controller.js
