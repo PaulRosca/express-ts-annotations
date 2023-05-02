@@ -9,12 +9,13 @@
     "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "nodenext",
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "examples"]
+  "include": ["src/*.ts","src/**/*.ts", "test/*.ts"],
+  "exclude": ["node_modules"]
 }

@@ -1,31 +1,47 @@
-import { RouteConfig } from "./types.js";
-import { RouteConfigs } from "./utils.js"
+import { NextFunction, Request, Response, Router } from "express";
+import { Constructable, ControllerFunction, RouteConfig } from "./types";
+import { ErrorHandler, RouteConfigs, kebabize } from "./utils";
 
-export function controller(path: string = "/") {
-    let localPath = path;
-    if(!localPath.startsWith("/")) {
-        localPath = "/" + localPath;
-    }
-    return function <T extends new (...args: any[]) => any>(constructor: T) {
-        return class extends constructor {
-
-            constructor(...args: any[]) {
-                super(...args);
-                this.path = localPath;
-                this.__configure();
-            };
-
-            __configure() {
-                for (let rc of constructor.prototype[RouteConfigs].values()) {
-                    let config = rc as RouteConfig;
-                    if (config.middlewares) {
-                        this.__router[config.method](config.path, ...config.middlewares, config.controller);
-                    }
-                    else {
-                        this.__router[config.method](config.path, config.controller);
+export function controller<T extends Constructable>(path?: string) {
+    return function decorator(originalClass: T, context: ClassDecoratorContext) {
+        let localPath = path || kebabize(context.name);
+        if (!localPath.startsWith("/")) {
+            localPath = "/" + localPath;
+        }
+        if (context.kind === "class") {
+            return class extends originalClass {
+                private __router = Router();
+                private __path = localPath;
+                constructor(...args: any[]) {
+                    super(args);
+                    this.__configure();
+                }
+                get path() {
+                    return this.__path;
+                }
+                get router() {
+                    return this.__router;
+                }
+                private __configure() {
+                    if(!(this as any)[RouteConfigs]) return;
+                    for (const rc of (this as any)[RouteConfigs].values()) {
+                        const config = rc as RouteConfig;
+                        let controller = config.controller;
+                        const errorHandler = (this as any)[ErrorHandler]?.bind(this) || this["errorHandler"]?.bind(this)
+                        if(errorHandler) {
+                            controller = async function(req: Request, res: Response, next: NextFunction) {
+                                return await errorHandler(config.controller, req, res, next);
+                            } as ControllerFunction
+                        }
+                        if (config.middlewares) {
+                            this.__router[config.method](config.path, ...config.middlewares, controller);
+                        }
+                        else {
+                            this.__router[config.method](config.path, controller);
+                        }
                     }
                 }
-            };
-        };
-    };
-};
+            }
+        }
+    }
+}
