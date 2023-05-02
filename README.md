@@ -198,6 +198,6 @@ This method decorator will asign the controller error handling function. This ca
 ### `injectControllers(app: Express, controllers: any[])`
 This function is used to inject the `controllers` into the `express` application.
 ## Disclaimer
-- Version `2.0.0^` has migrated to Typescript `5.0` decorators as opposed to the `experimentalDecorators` from previous versions.
-- The decorated class methods must be public in order to bind the class context to them
-- The types are a bit loose, feel free to improve them and send PR requests on github
+- Version `2.0.0^` has migrated to Typescript `5.0` decorators as opposed to the `experimentalDecorators` from previous versions. Also I removed the `BaseController` class from previous versions.
+- The decorated class methods must be public in order to bind the class context to them.
+- The types are a bit loose, feel free to improve them and send PR requests on github.
