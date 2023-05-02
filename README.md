@@ -195,5 +195,9 @@ This method decorator is used to specify the `middlewares` that should apply to 
 ### `@errorHandler`
 This method decorator will asign the controller error handling function. This can be omitted if the method name is `errorHandler`. If both a method with the name `errorHandler` and a method wit the `@errorHandler` annotation exist in the class, the annotated method will be used.
 ## Functions
-### `injectControllers(app: Express, controllers: BaseController[])`
+### `injectControllers(app: Express, controllers: any[])`
 This function is used to inject the `controllers` into the `express` application.
+## Disclaimer
+- Version `2.0.0^` has migrated to Typescript `5.0` decorators as opposed to the `experimentalDecorators` from previous versions.
+- The decorated class methods must be public in order to bind the class context to them
+- The types are a bit loose, feel free to improve them and send PR requests on github
