@@ -10,8 +10,8 @@ export function controller<T extends Constructable>(path?: string) {
         }
         if (context.kind === "class") {
             return class extends originalClass {
-                private __router = Router();
-                private __path = localPath;
+                __router = Router();
+                __path = localPath;
                 constructor(...args: any[]) {
                     super(args);
                     this.__configure();
@@ -22,7 +22,7 @@ export function controller<T extends Constructable>(path?: string) {
                 get router() {
                     return this.__router;
                 }
-                private __configure() {
+                __configure() {
                     if(!(this as any)[RouteConfigs]) return;
                     for (const rc of (this as any)[RouteConfigs].values()) {
                         const config = rc as RouteConfig;
